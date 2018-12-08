@@ -11,6 +11,7 @@ Author URI: http://www.arcs.org.rs
 
 class Widget_Recent_Posts_Plugin extends WP_Widget {
     
+    
     function __construct() {
 		parent::__construct(
 
@@ -23,7 +24,26 @@ class Widget_Recent_Posts_Plugin extends WP_Widget {
 			// widget options
 			array ( 'description' => __( 'Widget that displays recent posts', 'namespace' ) ) );
         
-	}
+    }
+    
+    /*Front-end display of widget.*/
+    public function widget( $args, $instance ) {
+        
+    }
+    
+    /* Back-end widget form.*/
+    public function form( $instance ) {
+        
+    }
+    
+    /* Sanitize widget form values as they are saved.*/
+    public function update( $new_instance, $old_instance ) {
+        
+    }
+    
+        
+        
+        
 }
 
 // register Widget Recent Posts Plugin for Quantox

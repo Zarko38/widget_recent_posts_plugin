@@ -32,9 +32,15 @@ class Widget_Recent_Posts_Plugin extends WP_Widget {
         $post_number = ( ! empty( $instance[ 'post_number' ] ) ) ? $instance[ 'post_number' ] : -1;
         
         if ( $title ) {
+            ?>
+            <div style="width: 100%;">
+            <?php
             echo $args[ 'before_title' ];
             echo $title;
             echo $args[ 'after_title' ];
+            ?>
+            </div>
+            <?php
         }
         
 	/*preparing new query*/
@@ -48,9 +54,11 @@ class Widget_Recent_Posts_Plugin extends WP_Widget {
         if ( $new_query->have_posts() ) :
             while ( $new_query->have_posts() ) : $new_query->the_post(); 
         ?>
-
-        <a> <?php echo get_the_title(); ?> </a>
-        
+        <div style=" margin-top: 30px;">
+            <a> <?php echo get_the_title(); ?> </a>
+            <div style="max-width: 50%;">    <?php echo get_the_post_thumbnail();?></div>
+            <p><?php echo get_the_excerpt(); ?></p>
+        </div>
         <?php
             endwhile;
             // Reset the global $the_post

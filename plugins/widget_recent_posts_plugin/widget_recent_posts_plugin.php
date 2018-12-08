@@ -26,18 +26,37 @@ class Widget_Recent_Posts_Plugin extends WP_Widget {
         
     }
     
-    /*Front-end display of widget.*/
+    /*Front-end of widget.*/
     public function widget( $args, $instance ) {
+        $title = ( ! empty( $instance[ 'title' ] ) ) ? $instance[ 'title' ] : '';
         
+        if ( $title ) {
+            echo $args[ 'before_title' ];
+            echo $title;
+            echo $args[ 'after_title' ];
+        }
     }
+    		
     
     /* Back-end widget form.*/
     public function form( $instance ) {
-        
+        $title = isset( $instance[ 'title' ] ) ? esc_html( $instance[ 'title' ] ) : __( 'New title', 'namespace' );
+        ?>
+        <p>
+            <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php echo _e( 'Title: ', 'namespace' ); ?></label>
+            <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>"
+                   name="<?php echo $this->get_field_name( 'title' ); ?>"
+                   type="text"
+                   value="<?php echo esc_html( $title ); ?>">
+	</p>
+    <?php    
     }
     
     /* Sanitize widget form values as they are saved.*/
     public function update( $new_instance, $old_instance ) {
+        $instance[ 'title' ] = ( ! empty ( $new_instance[ 'title' ] ) ) ? strip_tags( $new_instance[ 'title' ] ) : '';
+        
+        return $instance;
         
     }
     

@@ -30,6 +30,7 @@ class Widget_Recent_Posts_Plugin extends WP_Widget {
     public function widget( $args, $instance ) {
         $title = ( ! empty( $instance[ 'title' ] ) ) ? $instance[ 'title' ] : '';
         $post_number = ( ! empty( $instance[ 'post_number' ] ) ) ? $instance[ 'post_number' ] : -1;
+        $display_thumbnail = isset( $instance[ 'display_thumbnail' ] ) ? $instance[ 'display_thumbnail' ] : false;
         
         if ( $title ) {
             ?>
@@ -56,7 +57,10 @@ class Widget_Recent_Posts_Plugin extends WP_Widget {
         ?>
         <div style=" margin-top: 30px;">
             <a> <?php echo get_the_title(); ?> </a>
-            <div style="max-width: 50%;">    <?php echo get_the_post_thumbnail();?></div>
+            <?php if ( $display_thumbnail ){ ?>
+                <div style="max-width: 50%;">    <?php echo get_the_post_thumbnail();?></div>
+            <?php } ?>
+            
             <p><?php echo get_the_excerpt(); ?></p>
         </div>
         <?php
@@ -71,6 +75,7 @@ class Widget_Recent_Posts_Plugin extends WP_Widget {
     public function form( $instance ) {
         $title = isset( $instance[ 'title' ] ) ? esc_html( $instance[ 'title' ] ) : __( 'New title', 'namespace' );
         $post_number = isset( $instance[ 'post_number' ] ) ?  $instance[ 'post_number' ] : 4;
+        $display_thumbnail = isset( $instance[ 'display_thumbnail' ] ) ? (bool) $instance[ 'display_thumbnail' ] : false;
         ?>
         <p>
             <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php echo _e( 'Title: ', 'namespace' ); ?></label>
@@ -89,6 +94,13 @@ class Widget_Recent_Posts_Plugin extends WP_Widget {
                    value="<?php echo $post_number; ?>"
                    size="4"/>
         </p>
+        
+        <p>
+            <input class="checkbox" type="checkbox" <?php checked( $display_thumbnail ); ?>
+                   id="<?php echo $this->get_field_id( 'display_thumbnail' ); ?>"
+                   name="<?php echo $this->get_field_name( 'display_thumbnail' ); ?>"/>
+            <label for="<?php echo $this->get_field_id( 'display_thumbnail' ); ?>"><?php _e( 'Show post thumbnail', 'namespace' ); ?></label>
+	</p>
     <?php
     }
     
@@ -96,7 +108,7 @@ class Widget_Recent_Posts_Plugin extends WP_Widget {
     public function update( $new_instance, $old_instance ) {
         $instance[ 'title' ] = ( ! empty ( $new_instance[ 'title' ] ) ) ? strip_tags( $new_instance[ 'title' ] ) : '';
         $instance[ 'post_number' ] = ( ! empty ( $new_instance[ 'post_number' ] ) ) ? $new_instance[ 'post_number' ]  : '';
-        
+        $instance[ 'display_thumbnail' ] = isset( $new_instance[ 'display_thumbnail' ] ) ? (bool) $new_instance[ 'display_thumbnail' ] : false;
         
         return $instance;
         
